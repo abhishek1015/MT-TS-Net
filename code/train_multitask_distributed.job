@@ -47,10 +47,10 @@ jq 'del(.modelarch)' model.json > tmp.$$.json && mv tmp.$$.json $model_json
 jq '. + { "modelarch": '$modelarch'}' $model_json > tmp.$$.json && mv tmp.$$.json $model_json
 
 python3 -m torch.distributed.launch --nproc_per_node=4 train_multitask_distributed.py \
-  --dataset_csv "/data/dubeyak/Cancer-research/code/data/tcga-brca/casewise_linked_data.csv" \
+  --dataset_csv "/data/Jiang_Lab/Data/MT-TS-Net/code/data/tcga-brca/casewise_linked_data.csv" \
   --seg_dir "/data/Jiang_Lab/Data/tcga-brca-segmentations/" \
-  --output_dir "/data/dubeyak/output_dir/" \
-  --checkpoint_dir "/data/dubeyak/checkpoint_dir/" \
+  --output_dir "/data/Jiang_Lab/Data/MT-TS-Net-output/" \
+  --checkpoint_dir "/data/Jiang_Lab/Data/MT-TS-Net-checkpoint/" \
   --save_model_freq 10 \
   --batch_size $batch_size \
   --patch_size $patch_size \
