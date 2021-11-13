@@ -7,7 +7,7 @@
 
 ```
 cd code
-./code/launch_multitask_training_jobs.sh
+./launch_multitask_training_jobs.sh
 ```
 
 or 
