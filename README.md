@@ -6,6 +6,13 @@
 ## Launch slurm job for training network
 
 ```
+cd code
+./code/launch_multitask_training_jobs.sh
+```
+
+or 
+
+```
 #!/bin/bash
 
 patch_size=224
