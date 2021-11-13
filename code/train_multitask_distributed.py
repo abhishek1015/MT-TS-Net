@@ -952,7 +952,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--warmup_k',
         type=int,
-        default=20,
+        default=-1,
         help='warm up epoch',
     )
     parser.add_argument(
