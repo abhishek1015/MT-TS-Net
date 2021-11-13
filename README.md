@@ -6,6 +6,8 @@
 ## Launch slurm job for training network
 
 ```
+#!/bin/bash
+
 patch_size=224
 modelarch="\"resnet18\""
 latent_dim=512
