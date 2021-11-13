@@ -9,9 +9,9 @@
 patch_size=224
 modelarch="\"resnet18\""
 latent_dim=512
-description="\"brca_experiment\""
+description="\"brca_multitask_experiment\""
 stat_norm_scheme="pretrained"
-reference_patch="/data/dubeyak/Cancer-research/code/reference_patches/reference_patch_224.pkl"
+reference_patch="reference_patch_224.pkl"
 learning_rate=0.00001
 num_patch=32
 batch_size=8
