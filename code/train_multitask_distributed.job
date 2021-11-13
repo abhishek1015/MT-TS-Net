@@ -30,7 +30,7 @@ conda info --envs
 #alias python='/data/dubeyak/miniconda3/envs/gpuai/bin/python'
 python --version
 
-cd /data/dubeyak/Cancer-research/code/
+cd /data/Jiang_Lab/Data/MT-TS-Net/code/
 
 echo $SLURM_JOB_ID
 model_json="model_"$SLURM_JOB_ID".json"
