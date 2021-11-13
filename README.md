@@ -9,7 +9,9 @@ conda env create -f environment.yml
 
 ### Activating conda environment
 
-``` conda activate gpuai2```
+```
+conda activate gpuai2
+```
 
 ### Launch slurm job for training network
 
