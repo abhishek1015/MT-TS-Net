@@ -1,9 +1,17 @@
 # MT-TS-Net
 
 
+### Creating conda environment
 
+```
+conda env create -f environment.yml
+```
 
-## Launch slurm job for training network
+### Activating conda environment
+
+``` conda activate gpuai2```
+
+### Launch slurm job for training network
 
 ```
 #!/bin/bash
