@@ -1,16 +1,32 @@
 # MT-TS-Net
 
+### Create conda environment
 
-### Creating conda environment
+```
+conda create --name mt-ts-net python=3.8
+conda activate mt-ts-net
+```
+
+### Installing packages
 
 ```
 ./install-packages.sh
 ```
 
-### Activating conda environment
+### Biowulf configuration
 
+edit ~/.bashrc
 ```
-conda activate gpuai2
+alias pip='/data/dubeyak/miniconda3/envs/mt-ts-net/bin/pip'
+alias python='/data/dubeyak/miniconda3/envs/mt-ts-net/bin/python'
+conda activate mt-ts-net
+cd /data/Jiang_Lab/Data/MT-TS-Net/code/
+```
+
+edit ~/.bash_profile
+```
+PATH=/data/dubeyak/miniconda3/envs/mt-ts-net/bin/:$PATH:$HOME/.local/bin:$HOME/bin
+export PATH
 ```
 
 ### Launch slurm job for training network
