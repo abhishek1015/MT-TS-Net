@@ -38,15 +38,11 @@ import matplotlib.pyplot as plt
 from vae_inference import *
 from sklearn.model_selection import train_test_split
 import pandas as pd
-#from components_grayscale import ResNetDecoder, DecoderBlock, DecoderBottlenec
-#from basic_vae_module_grayscale import *
 from basic_vae_module import *
 from components import ResNetDecoder, DecoderBlock, DecoderBottleneck
 from custom_resnet_module  import customResnetModel
 from collections import OrderedDict
 import re
-#from torchcontrib.optim import SWA
-#from pl_bolts.models.autoencoders import VAE
 
 
 logging.basicConfig(filename='train' + os.environ['SLURM_JOB_ID'] + '.log', level=logging.INFO)
@@ -132,7 +128,6 @@ class Trainer:
            self.svs_dataset_train,
            batch_size=self.batch_size,
            shuffle=not self.distributed,
-           #shuffle=False,
            num_workers=self.num_workers,
            pin_memory=True,
            sampler=DistributedSampler(trainset, shuffle=False, num_replicas=self.world_size, rank=self.local_rank, drop_last=False) if self.distributed else WeightedRandomSampler(sample_weights.values,len(self.svs_dataset_train),replacement=True),
@@ -149,7 +144,6 @@ class Trainer:
            self.svs_dataset_test,
            batch_size=self.batch_size,
            shuffle=not self.distributed,
-           #shuffle=False,
            num_workers=self.num_workers,
            pin_memory=True,
            #sampler=DistributedSampler(testset) if self.distributed else None,
@@ -162,18 +156,6 @@ class Trainer:
     def load_feature_network(self):
        if self.modelarch=='resnet18':
            self.model = customResnetModel()
-       elif self.modelarch=='resnet34':
-           self.model = models.resnet34(pretrained=True)
-           self.model.fc = torch.nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=self.num_img_fea[self.modelarch], bias=True)
-           #self.model.decoder = ResNetDecoder(DecoderBlock, [3, 4, 6, 3], self.num_img_fea[self.modelarch], self.recon_size, False, False) 
-           #self.model.fc_mu = nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=int(self.num_img_fea[self.modelarch]))
-           #self.model.fc_var = nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=int(self.num_img_fea[self.modelarch]))
-       elif self.modelarch=='inception_v3':
-           self.model = models.inception_v3(pretrained=True)
-           self.model.fc = torch.nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=self.num_img_fea[self.modelarch], bias=True)
-           self.model.decoder = ResNetDecoder(DecoderBottleneck, [3, 4, 6, 3], self.num_img_fea[self.modelarch], self.recon_size, False, False) 
-           self.model.fc_mu = nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=int(self.num_img_fea[self.modelarch]))
-           self.model.fc_var = nn.Linear(in_features=self.num_img_fea[self.modelarch], out_features=int(self.num_img_fea[self.modelarch]))
        elif self.modelarch == 'vaeresnet':
            self.model = customVAE(latent_dim=self.latent_dim, enc_out_dim=2048, enc_type='resnet50',first_conv=False,maxpool1=False, input_channels=self.num_img_channel)
            if self.latent_dim == 64:
@@ -247,8 +229,6 @@ class Trainer:
     def load_model(self):
        self.num_img_fea = { 
                     'resnet18': 512,
-                    'resnet34': 512,
-                    'inception_v3': 2048, 
                     'vaeresnet': self.latent_dim,
                   } 
 
@@ -469,9 +449,6 @@ class Trainer:
             A_U = self.model.module.attention_U(logits) #A_U: N x P x D
             A = self.model.module.attention_weights(A_V * A_U) # A: N x P x 1
             A = F.softmax(A, dim=1)
-            #A = torch.reshape(A, (N*P, 1))
-            #A = F.softmax(A, dim=0)  # softmax over P -- A: N x P x 1
-            #A = torch.reshape(A, (N, P, 1))
             A = A.repeat(1,1,L)
             agg_fea = torch.sum(A*logits, dim=1)
         elif self.MIL_pool == 'plain_attention':
@@ -697,13 +674,11 @@ class Trainer:
             it_multitask_losses[k]=us_multitask_losses[k].detach().cpu().item()
 
         self.scaler.scale(loss).backward()
-        #loss.backward()
 
         self.scaler.unscale_(self.optim)
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.5)
         self.scaler.step(self.optim)
         self.scaler.update()
-        #self.optim.step()
         return itloss, it_multitask_losses
 
     def plot_kaplan_meirer_curve(self, p, g, e, split):
@@ -990,12 +965,6 @@ if __name__ == '__main__':
         type=str,
         default='/data/Jiang_Lab/Data/tcga-brca-segmentations/',
         help='Segmentation directory',
-    )
-    parser.add_argument(
-        '--gene_file',
-        type=str,
-        default='data/tcga-brca/gene_expression.csv',
-        help='Gene expression file',
     )
     parser.add_argument(
         '--output_dir',
