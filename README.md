@@ -1,15 +1,10 @@
 # MT-TS-Net
 
-### Create conda environment
+### Create conda environment & installing packages
 
 ```
 conda create --name mt-ts-net python=3.8
 conda activate mt-ts-net
-```
-
-### Installing packages
-
-```
 ./install-packages.sh
 ```
 
@@ -17,15 +12,15 @@ conda activate mt-ts-net
 
 edit ~/.bashrc
 ```
-alias pip='/data/dubeyak/miniconda3/envs/mt-ts-net/bin/pip'
-alias python='/data/dubeyak/miniconda3/envs/mt-ts-net/bin/python'
-conda activate mt-ts-net
+alias pip='/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/pip'
+alias python='/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/python'
+conda activate /data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net
 cd /data/Jiang_Lab/Data/MT-TS-Net/code/
 ```
 
 edit ~/.bash_profile
 ```
-PATH=/data/dubeyak/miniconda3/envs/mt-ts-net/bin/:$PATH:$HOME/.local/bin:$HOME/bin
+PATH=/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/:$PATH:$HOME/.local/bin:$HOME/bin
 export PATH
 ```
 
