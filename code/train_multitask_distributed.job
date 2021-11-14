@@ -22,10 +22,10 @@ stat_norm_scheme=${11}
 reference_patch=${12}
 
 source ~/.bash_profile
-eource /data/dubeyak/miniconda3/etc/profile.d/conda.sh
+source /data/dubeyak/miniconda3/etc/profile.d/conda.sh
 module load cuDNN/7.6.5/CUDA-10.2
 module load jq
-conda activate gpuai
+conda activate gpuai2
 conda info --envs
 #alias python='/data/dubeyak/miniconda3/envs/gpuai/bin/python'
 python --version
