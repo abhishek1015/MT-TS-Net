@@ -13,7 +13,7 @@ conda activate mt-ts-net
 ./install-packages.sh
 ```
 
-### Biowulf configuration
+### Biowulf configuration for slurm job
 
 edit ~/.bashrc
 ```
