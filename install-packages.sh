@@ -1,7 +1,8 @@
 #!/bin/bash
 
 pip install openslide-python
-conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
+conda install pytorch==1.7.0 torchvision==0.8.1 cudatoolkit=10.2 -c pytorch
+#conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
 conda install -c conda-forge tqdm
 conda install pandas
 pip install visdom
