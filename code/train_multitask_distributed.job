@@ -22,12 +22,10 @@ stat_norm_scheme=${11}
 reference_patch=${12}
 
 source ~/.bash_profile
-source /data/dubeyak/miniconda3/etc/profile.d/conda.sh
 module load cuDNN/7.6.5/CUDA-10.2
 module load jq
-conda activate mt-ts-net
+conda activate /data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net
 conda info --envs
-#alias python='/data/dubeyak/miniconda3/envs/gpuai/bin/python'
 python --version
 
 cd /data/Jiang_Lab/Data/MT-TS-Net/code/
