@@ -27,8 +27,6 @@ from torch.utils.data import DataLoader, Dataset, DistributedSampler, Sampler, S
 from util.loss import CoxPHLoss
 from util import util
 from lifelines.utils import concordance_index
-from model import ConvNet
-from model import MnistResNet
 import torch.utils.data as data_utils
 import adabound
 from efficientnet_pytorch import EfficientNet
