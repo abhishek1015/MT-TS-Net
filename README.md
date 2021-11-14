@@ -4,7 +4,7 @@
 ### Creating conda environment
 
 ```
-conda env create -f environment.yml
+./install-packages.sh
 ```
 
 ### Activating conda environment
