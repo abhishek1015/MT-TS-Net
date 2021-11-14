@@ -45,6 +45,18 @@ kl_coeff=0
 sbatch --gres=gpu:p100:4 --time=10:00:00 train_multitask_distributed.job $batch_size $num_patch $patch_size $recon_size $warmup_k $modelarch $learning_rate $dropout $kl_coeff $latent_dim $stat_norm_scheme $reference_patch
 ```
 
+### Start jupyter server
+```
+jupyter notebook --port 9999 --no-browser
+```
+
+### Visualize the task losses
+
+Open notebook on browser 
+```
+http://localhost:9999/notebooks/notebooks/post-training-analysis.ipynb
+```
+
 ### External dependencies
 ```
 1. https://github.com/mahmoodlab/CLAM
