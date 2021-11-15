@@ -44,7 +44,7 @@ elif modelarch=='resnet18':
 
 num_samples=151
 ge_count=93
-num_patch=500
+num_patch=400
 batch_size=1
 if modelarch=='vaeresnet':
     patch_size=64
@@ -65,7 +65,6 @@ if modelarch=='vaeresnet':
     patch_size=64
 elif modelarch=='resnet18':
     patch_size=224
-num_workers=16
 color_norm=True
 if modelarch=='vaeresnet':
     stat_norm_scheme="random"
