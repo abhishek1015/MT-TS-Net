@@ -57,6 +57,14 @@ Open notebook on browser
 http://localhost:9999/notebooks/notebooks/post-training-analysis.ipynb
 ```
 
+### Save MT-TS-Net representation and associated annotations of random patches
+
+```
+python script_save_HE_representation.py <slurm-job-id> <checkpoint-number> <modelarch>
+python script_save_HE_representation_with_brca_sseg.py <slurm-job-id> <checkpoint-number> <modelarch>
+```
+
+
 ### External dependencies
 ```
 1. https://github.com/mahmoodlab/CLAM
