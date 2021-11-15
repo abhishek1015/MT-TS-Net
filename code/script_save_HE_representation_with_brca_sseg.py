@@ -25,7 +25,7 @@ np.random.seed(0)
 # command-line inputs
 # <slurm-job-id> <checkpoint-number> <modelarch>
 if len(sys.argv) > 3:
-slurm_job_id = sys.argv[1]
+    slurm_job_id = sys.argv[1]
     _checkpoint_number = sys.argv[2]
     modelarch = sys.argv[3]
 print(slurm_job_id)
@@ -40,7 +40,7 @@ num_samples=151
 ge_count=93
 num_patch=500
 batch_size=1
-num_workers=12
+num_workers=8
 split_seed=10000
 fea_size=2048
 latent_dim=512
