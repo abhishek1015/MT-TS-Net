@@ -29,10 +29,13 @@ kl_coeff=0
 sbatch --gres=gpu:p100:4 --time=10:00:00 train_multitask_distributed.job $batch_size $num_patch $patch_size $recon_size $warmup_k $modelarch $learning_rate $dropout $kl_coeff $latent_dim $stat_norm_scheme $reference_patch
 ```
 
-### Start jupyter server
+### Save MT-TS-Net representation and associated annotations of random patches
+
 ```
-jupyter notebook --port 9999 --no-browser
+python script_save_HE_representation.py <slurm-job-id> <checkpoint-number> <modelarch>
+python script_save_HE_representation_with_brca_sseg.py <slurm-job-id> <checkpoint-number> <modelarch>
 ```
+
 
 ### Visualize the task losses
 
@@ -41,11 +44,10 @@ Open notebook on browser
 http://localhost:9999/notebooks/notebooks/post-training-analysis.ipynb
 ```
 
-### Save MT-TS-Net representation and associated annotations of random patches
+### Visualize density maps
 
 ```
-python script_save_HE_representation.py <slurm-job-id> <checkpoint-number> <modelarch>
-python script_save_HE_representation_with_brca_sseg.py <slurm-job-id> <checkpoint-number> <modelarch>
+http://localhost:9999/notebooks/notebooks/HE-encoder-visualization.ipynb
 ```
 
 
