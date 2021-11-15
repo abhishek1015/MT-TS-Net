@@ -8,22 +8,6 @@ conda activate mt-ts-net
 ./install-packages.sh
 ```
 
-### Biowulf configuration for slurm job
-
-edit ~/.bashrc
-```
-alias pip='/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/pip'
-alias python='/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/python'
-conda activate /data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net
-cd /data/Jiang_Lab/Data/MT-TS-Net/code/
-```
-
-edit ~/.bash_profile
-```
-PATH=/data/Jiang_Lab/Data/MT-TS-Net-condaenv/mt-ts-net/bin/:$PATH:$HOME/.local/bin:$HOME/bin
-export PATH
-```
-
 ### Launch slurm job for training network
 
 ```
