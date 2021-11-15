@@ -36,7 +36,7 @@ freen | grep -E 'Partition|----|gpu'
 ### Start a interactive session with 1 GPU and start ssh port forwarding
 ```
 sinteractive --gres=gpu:p100:1 --cpus-per-task=40
-ssh -L 9999:localhost:9999 dubeyak@$1 -N -v -v
+ssh -L 9999:localhost:9999 dubeyak@<machine-name> -N -v -v
 ```
 
 
