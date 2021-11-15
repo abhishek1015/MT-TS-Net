@@ -22,34 +22,24 @@ torch.backends.cudnn.benchmark = False
 random.seed(0)
 np.random.seed(0)
 
+# command-line inputs
+# <slurm-job-id> <checkpoint-number> <modelarch>
+if len(sys.argv) > 3:
 slurm_job_id = sys.argv[1]
-
-if len(sys.argv) > 2:
     _checkpoint_number = sys.argv[2]
     modelarch = sys.argv[3]
-
 print(slurm_job_id)
 
+# parameters
 os.environ["SLURM_JOB_ID"] = slurm_job_id
 project_str = 'brca'
-
 use_amp=False
 has_ctl=True
 has_decoder=False
-
-if modelarch=='vaeresnet':
-    stat_norm_scheme='random'
-elif modelarch=='resnet18':
-    stat_norm_scheme='pretrained'
-
 num_samples=151
 ge_count=93
-num_patch=400
+num_patch=500
 batch_size=1
-if modelarch=='vaeresnet':
-    patch_size=64
-elif modelarch=='resnet18':
-    patch_size=224
 num_workers=12
 split_seed=10000
 fea_size=2048
@@ -61,31 +51,26 @@ full_data = True
 color_norm=True
 num_img_channel=3
 mpp=0.5
+
 if modelarch=='vaeresnet':
+    stat_norm_scheme='random'
     patch_size=64
-elif modelarch=='resnet18':
-    patch_size=224
-color_norm=True
-if modelarch=='vaeresnet':
-    stat_norm_scheme="random"
-elif modelarch=='resnet18':
-    stat_norm_scheme="pretrained"
-data = pd.read_csv('/data/Jiang_Lab/Data/tcga-brca-semantic-seg/semantic_seg_data.csv', delimiter=',')
-if modelarch=='vaeresnet':
     reference_filename = '/data/Jiang_Lab/Data/MT-TS-Net/code/reference_patch_64.pkl'
 elif modelarch=='resnet18':
+    stat_norm_scheme='pretrained'
+    patch_size=224
     reference_filename = "/data/Jiang_Lab/Data/MT-TS-Net/code/reference_patch_224.pkl"
+
+# load data
+data = pd.read_csv('/data/Jiang_Lab/Data/tcga-brca-semantic-seg/semantic_seg_data.csv', delimiter=',')
 dataset = SemanticSegData(data, mpp, patch_size, num_patch, num_workers, color_norm, stat_norm_scheme, reference_filename)
 ds = torch.utils.data.DataLoader(dataset,batch_size=1, num_workers=num_workers, shuffle=False)
 
-if len(sys.argv)>2:
-    pretrained_model_name = _checkpoint_number + '_net_' + modelarch + '.pth'
-else:
-    pretrained_model_name = str(max([int(x.split('_')[0]) for x in os.listdir(pretrained_dir) if x.split('_')[0]!='kaplan' and x != os.environ["SLURM_JOB_ID"]+'_full.npy'])) + '_net_' + modelarch + '.pth'
-
+pretrained_model_name = _checkpoint_number + '_net_' + modelarch + '.pth'
 pretrained_model_name = pretrained_dir + pretrained_model_name;
 print(pretrained_model_name)
 
+# model
 if modelarch=='vaeresnet':
   model = customVAE(latent_dim=latent_dim, enc_out_dim=fea_size, enc_type='resnet50',first_conv=False,maxpool1=False, input_channels=3)
   #model = customVAE.load_from_checkpoint(checkpoint_path='/data/Jiang_Lab/Data/VAE-tcga-brca-model/normal_color.ckpt')
@@ -106,7 +91,6 @@ model.logvar_dysfunction = torch.nn.Parameter(torch.zeros(1))
 model.logvar_exclusion = torch.nn.Parameter(torch.zeros(1))
 if has_ctl:
   model.logvar_ctl = torch.nn.Parameter(torch.zeros(1))
-#if has_decoder:
 model.logvar_patch_recon = torch.nn.Parameter(torch.zeros(1))
 model.logvar_ge = torch.nn.Parameter(torch.zeros(ge_count))
 model.dropout = torch.nn.Dropout(0.8)
@@ -134,7 +118,6 @@ model.attention_U = torch.nn.Sequential(torch.nn.Linear(L, D), torch.nn.Sigmoid(
 model.attention_weights = torch.nn.Linear(D, K)
 _checkpoint = torch.load(pretrained_model_name)
 
-#if modelarch == 'vaeresnet':
 _model = _checkpoint["model"]
 new_state_dict = OrderedDict()
 pattern = re.compile('module.')
@@ -143,18 +126,14 @@ for k,v in _model.items():
         new_state_dict[re.sub(pattern, '', k)] = v
     else:
         new_state_dict = _model
-#else:
-#    new_state_dict=_checkpoint
 model.load_state_dict(new_state_dict);
 
-#if  modelarch == 'vaeresnet':
 scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
 scaler.load_state_dict(_checkpoint["scaler"])
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model=model.to(device)
 
-#feas = np.zeros([num_samples*num_patch, fea_size])
 feas = np.zeros([num_samples*num_patch, latent_dim])
 semantic_segs = np.zeros([num_samples*num_patch, 1])
 
@@ -167,7 +146,6 @@ with torch.no_grad():
         image = data_dict['image']
         semantic_seg = data_dict['semantic_seg']
         num_images = image.shape[0]
-        #pdb.set_trace()
         image = torch.reshape(image, 
             (num_images*num_patch, num_img_channel, patch_size, patch_size))
         image = image.to(device)
