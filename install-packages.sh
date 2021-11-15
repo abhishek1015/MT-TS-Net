@@ -21,3 +21,5 @@ conda install h5py
 pip install girder_client girder-client pillow numpy scikit-image imageio
 conda install -c conda-forge pytorch-lightning
 pip install pytorch-lightning-bolts
+conda install -c conda-forge umap-learn
+pip install numpy==1.20.0
