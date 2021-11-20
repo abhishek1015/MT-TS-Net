@@ -1,0 +1,19 @@
+all_scores
+	Gene: Entrez ID
+	File: data file name used for computation
+	Cohort: study cohort name
+	Cancer: cancer name
+	Subtype: cancer subtype
+	Platform: molecular profiling platform
+	Survival: survival type (OS: overall survival, PFS: progression free survival)
+	Core: whether the current cohort is among five core datasets
+	Symbol: gene symbol
+	CTL Cor: Pearson correlation with the level of cytotoxic T lymphocytes (CTL).
+	T Dysfunction: T cell dysfunction score (z-score from the interaction test model)
+	Risk: gene association with death risk (z-score from Cox-PH regression)
+	Risk.adj: gene association with death risk, adjusted for the effect of CTL level in CoxPH regression.
+
+raw_output/*.interaction
+	z: T cell dysfunction score, defined as the z-score from the interaction test model
+	p: two-sided Wald test p-value of T cell dysfunction score
+	FDR: false discovery rate, estimated from the p-values using the Benjamini-Hochberg procedure.
