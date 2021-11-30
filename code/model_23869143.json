@@ -1,0 +1,30 @@
+{
+  "num_layers": 3,
+  "pooling_type": "embedding_level",
+  "MIL_pool": "gated_attention",
+  "linked_features": [
+    "duration",
+    "duration_q",
+    "event",
+    "ajcc_pathologic_stage",
+    "ajcc_pathologic_n",
+    "ajcc_pathologic_t",
+    "morphology",
+    "age_at_index",
+    "tcga_subtype",
+    "immune_subtype",
+    "MDSC",
+    "CAF",
+    "M2",
+    "Exclusion",
+    "Dysfunction",
+    "ctl",
+    "ge"
+  ],
+  "duration_quantiles": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "modelarch": "vaeresnet"
+}
